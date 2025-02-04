@@ -3,33 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecionar para WhatsApp</title>
+    <title>Escolha Seu Aparelho</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
-        a {
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+            margin: 10px 0 30px;
+        }
+        .button {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
+            margin: 10px;
+            padding: 15px 25px;
             background-color: #25d366;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
-        a:hover {
+        .button:hover {
             background-color: #1da851;
+        }
+        .hidden {
+            display: none;
+        }
+        .tutorial {
+            text-align: left;
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+        .tutorial img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .back-button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Redirecionar para o WhatsApp</h1>
-    <p>Clique no botão abaixo para abrir no WhatsApp:</p>
-    <a href="https://wa.me/5511915652929?text=Ol%C3%A1%2C%20vim%20pelo%20tiktok%20e%20gostaria%20de%20saber%20mais" target="_blank" rel="noopener noreferrer">
-        Abrir no WhatsApp
-    </a>
+    <!-- Primeira Tela -->
+    <div class="container" id="device-selection">
+        <h1>Seu aparelho celular é:</h1>
+        <a href="https://wa.me/5511915652929?text=Ol%C3%A1%2C%20vim%20pelo%20TikTok%20e%20gostaria%20de%20saber%20mais" class="button" id="android-button">Android</a>
+        <a href="#" class="button" id="iphone-button">iPhone</a>
+    </div>
+
+    <!-- Tutorial para iPhone -->
+    <div class="tutorial hidden" id="iphone-tutorial">
+        <h1>Abrir no Navegador</h1>
+        <p>Siga os passos abaixo:</p>
+        <img src="https://via.placeholder.com/350x200" alt="Tutorial iPhone">
+        <p>1. Clique nos <b>três pontinhos</b> no canto superior direito.</p>
+        <p>2. Selecione <b>"Abrir no navegador"</b>.</p>
+        <a href="#" class="back-button" id="back-button">Voltar</a>
+    </div>
+
+    <script>
+        // Elementos
+        const iphoneButton = document.getElementById('iphone-button');
+        const androidButton = document.getElementById('android-button');
+        const iphoneTutorial = document.getElementById('iphone-tutorial');
+        const backButton = document.getElementById('back-button');
+        const deviceSelection = document.getElementById('device-selection');
+
+        // Mostrar tutorial do iPhone
+        iphoneButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            deviceSelection.classList.add('hidden');
+            iphoneTutorial.classList.remove('hidden');
+        });
+
+        // Voltar para a seleção
+        backButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            deviceSelection.classList.remove('hidden');
+            iphoneTutorial.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>
