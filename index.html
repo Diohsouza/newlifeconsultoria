@@ -38,12 +38,15 @@
             color: white;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #218838;
         }
         .question {
             display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
         .progress-bar {
             width: 100%;
@@ -65,15 +68,20 @@
         
         function nextStep() {
             let questions = document.getElementsByClassName("question");
-            questions[step].style.display = "none";
-            step++;
-            
-            if (step < questions.length) {
-                questions[step].style.display = "block";
-                updateProgress();
-            } else {
-                enviarParaWhatsApp();
-            }
+            questions[step].style.opacity = "0";
+            setTimeout(() => {
+                questions[step].style.display = "none";
+                step++;
+                if (step < questions.length) {
+                    questions[step].style.display = "block";
+                    setTimeout(() => {
+                        questions[step].style.opacity = "1";
+                    }, 50);
+                    updateProgress();
+                } else {
+                    enviarParaWhatsApp();
+                }
+            }, 500);
         }
         
         function updateProgress() {
@@ -96,14 +104,14 @@
 </head>
 <body>
     <div class="container">
-        <h2>New Life Consultoria Financeira</h2> 
-        <p>Está com dívidas? Nós podemos te ajudar! 🚀 Responda 3 perguntas e fale com um especialista agora mesmo.</p>
+        <h2>New Life Consultoria Financeira - Recuperamos seu crédito com rapidez e segurança!</h2>
+        <p>Responda essas 3 perguntas rápidas e fale com um especialista agora mesmo!</p>
         
         <div class="progress-bar">
             <div id="progress" class="progress"></div>
         </div>
         
-        <div class="question" style="display: block;">
+        <div class="question" style="display: block; opacity: 1;">
             <label for="nome">Qual seu nome?</label>
             <input type="text" id="nome" required>
             <button onclick="nextStep()">Próxima</button>
