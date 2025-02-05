@@ -111,7 +111,7 @@
         }
         
         function enviarParaWhatsApp() {
-            let mensagem = `Olá, meu nome é ${nome}, tenho dívidas em ${tipoDivida} no valor aproximado de ${valorDivida}. Meu perfil se encaixa em ${score}% dos casos resolvidos por vocês. Como podemos prosseguir?`;
+            let mensagem = `Olá, meu nome é ${nome}, tenho dívidas em ${tipoDivida} no valor aproximado de ${valorDivida}. Gostaria de saber mais informações sobre o processo de vocês...`;
             let telefoneWhatsApp = "5511969542465";
             let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             window.location.href = url;
