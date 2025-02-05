@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro para WhatsApp</title>
+    <title>Quiz Interativo - WhatsApp</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,9 +26,9 @@
             font-weight: bold;
             color: #555;
         }
-        input, select {
+        input, select, button {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -36,26 +36,41 @@
         button {
             background-color: #28a745;
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
         }
         button:hover {
             background-color: #218838;
         }
+        .question {
+            display: none;
+        }
     </style>
     <script>
+        let step = 0;
+        let nome = "", tipoDivida = "", valorDivida = "";
+        
+        function nextStep() {
+            let currentQuestion = document.getElementsByClassName("question")[step];
+            currentQuestion.style.display = "none";
+            step++;
+            
+            if (step < document.getElementsByClassName("question").length) {
+                let nextQuestion = document.getElementsByClassName("question")[step];
+                nextQuestion.style.display = "block";
+            } else {
+                enviarParaWhatsApp();
+            }
+        }
+        
         function enviarParaWhatsApp() {
-            var nome = document.getElementById("nome").value;
-            var tipoDivida = document.getElementById("tipoDivida").value;
-            var valorDivida = document.getElementById("valor").value;
+            nome = document.getElementById("nome").value;
+            tipoDivida = document.getElementById("tipoDivida").value;
+            valorDivida = document.getElementById("valor").value;
             
-            var mensagem = `Olá! Meu nome é ${nome}. Minhas dívidas estão em: ${tipoDivida}. O valor aproximado é de ${valorDivida}.`;
-            
-            var telefoneWhatsApp = "5511969542465"; // Substitua pelo seu número de WhatsApp
-            var url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            let mensagem = `Olá! Meu nome é ${nome}. Minhas dívidas estão em: ${tipoDivida}. O valor aproximado é de ${valorDivida}.`;
+            let telefoneWhatsApp = "5511969542465"; // Substitua pelo seu número de WhatsApp
+            let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.location.href = url;
         }
@@ -63,28 +78,36 @@
 </head>
 <body>
     <div class="container">
-        <h2>Preencha as informações</h2>
-        <label for="nome">Qual seu nome?</label>
-        <input type="text" id="nome" required><br><br>
+        <h2>Responda as perguntas para receber ajuda!</h2>
         
-        <label for="tipoDivida">Suas dívidas estão em:</label>
-        <select id="tipoDivida">
-            <option value="CPF">CPF</option>
-            <option value="CNPJ">CNPJ</option>
-            <option value="CPF e CNPJ">CPF e CNPJ</option>
-        </select><br><br>
+        <div class="question" style="display: block;">
+            <label for="nome">Qual seu nome?</label>
+            <input type="text" id="nome" required>
+            <button onclick="nextStep()">Próxima</button>
+        </div>
         
-        <label for="valor">Qual o valor aproximado?</label>
-        <select id="valor">
-            <option value="10 mil">10 mil</option>
-            <option value="20 mil">20 mil</option>
-            <option value="30 mil">30 mil</option>
-            <option value="50 mil">50 mil</option>
-            <option value="100 mil">100 mil</option>
-            <option value="200 mil ou mais">200 mil ou mais</option>
-        </select><br><br>
+        <div class="question">
+            <label for="tipoDivida">Suas dívidas estão em:</label>
+            <select id="tipoDivida">
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+                <option value="CPF e CNPJ">CPF e CNPJ</option>
+            </select>
+            <button onclick="nextStep()">Próxima</button>
+        </div>
         
-        <button onclick="enviarParaWhatsApp()">Enviar para o WhatsApp</button>
+        <div class="question">
+            <label for="valor">Qual o valor aproximado?</label>
+            <select id="valor">
+                <option value="10 mil">10 mil</option>
+                <option value="20 mil">20 mil</option>
+                <option value="30 mil">30 mil</option>
+                <option value="50 mil">50 mil</option>
+                <option value="100 mil">100 mil</option>
+                <option value="200 mil ou mais">200 mil ou mais</option>
+            </select>
+            <button onclick="nextStep()">Enviar para o WhatsApp</button>
+        </div>
     </div>
 </body>
 </html>
