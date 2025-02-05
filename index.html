@@ -34,23 +34,14 @@
             border: 1px solid #ccc;
         }
         button {
+            background-color: #28a745;
+            color: white;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
         }
-        .btn-green {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-green:hover {
+        button:hover {
             background-color: #218838;
-        }
-        .btn-blue {
-            background-color: #003366;
-            color: white;
-        }
-        .btn-blue:hover {
-            background-color: #002855;
         }
         .question {
             display: none;
@@ -107,48 +98,16 @@
         });
         
         function calcularScore() {
-            let nomeInput = document.getElementById("nome");
-            let tipoDividaInput = document.getElementById("tipoDivida");
-            let valorDividaInput = document.getElementById("valor");
+            nome = document.getElementById("nome").value;
+            tipoDivida = document.getElementById("tipoDivida").value;
+            valorDivida = document.getElementById("valor").value;
             
-            if (!nomeInput || !tipoDividaInput || !valorDividaInput) {
-                alert("Por favor, preencha todas as perguntas antes de continuar.");
-                return;
-            }
-            
-            nome = nomeInput.value;
-            tipoDivida = tipoDividaInput.value;
-            valorDivida = valorDividaInput.value;
-            
-            let scoreBase = {
-                "Abaixo de R$7.000,00": 60,
-                "De R$7.000 a R$20.000": 70,
-                "De R$20.000 a R$35.000": 75,
-                "De R$35.000 a R$50.000": 80,
-                "De R$50.000 a R$80.000": 85,
-                "De R$80.000 a R$100.000": 90,
-                "Acima de R$100.000,00": 95
-            };
-            
+            let scoreBase = {"Abaixo de R$7.000,00": 90, "De R$7.000 a R$20.000": 85, "De R$20.000 a R$35.000": 75, "De R$35.000 a R$50.000": 80, "De R$50.000 a R$80.000": 85, "De R$80.000 a R$100.000": 90, "Acima de R$100.000,00": 95};
             score = scoreBase[valorDivida] || 50;
             
             document.getElementById("quiz-container").style.display = "none";
             document.getElementById("result-container").style.display = "block";
             document.getElementById("result-message").innerHTML = `Parabéns, ${nome}! Seu perfil se encaixa em <strong>${score}%</strong> dos casos que conseguimos resolver com sucesso! 🎯 Vamos dar o próximo passo?`;
-        }
-        
-        function enviarParaWhatsApp() {
-            let mensagem = `Olá, tudo bem? Meu nome é ${nome} e acabei de preencher o formulário. Tenho dívidas em ${tipoDivida} e o valor aproximado é ${valorDivida}. Meu perfil se encaixa em ${score}% dos casos que vocês resolvem. Como podemos prosseguir?`;
-            let telefoneWhatsApp = "5511969542465";
-            let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-            window.location.href = url;
-        }
-        
-        function copiarNumero() {
-            let telefone = "11969542465";
-            navigator.clipboard.writeText(telefone).then(() => {
-                alert("Número copiado para a área de transferência. Agora salve nos contatos e envie sua mensagem no WhatsApp.");
-            });
         }
     </script>
 </head>
@@ -161,18 +120,36 @@
             <div id="progress" class="progress"></div>
         </div>
         
-        <div class="question">
+        <div class="question active">
             <label for="nome">Qual seu nome?</label>
             <input type="text" id="nome" required>
-            <button class="btn-green" onclick="nextStep()">Próxima</button>
+            <button onclick="nextStep()">Próxima</button>
+        </div>
+        
+        <div class="question">
+            <label for="tipoDivida">Suas dívidas estão em:</label>
+            <select id="tipoDivida">
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+                <option value="CPF e CNPJ">CPF e CNPJ</option>
+            </select>
+            <button onclick="nextStep()">Próxima</button>
+        </div>
+        
+        <div class="question">
+            <label for="valor">Qual o valor aproximado?</label>
+            <select id="valor">
+                <option value="Abaixo de R$7.000,00">Abaixo de R$7.000,00</option>
+                <option value="De R$7.000 a R$20.000">De R$7.000 a R$20.000</option>
+                <option value="De R$20.000 a R$35.000">De R$20.000 a R$35.000</option>
+                <option value="De R$35.000 a R$50.000">De R$35.000 a R$50.000</option>
+            </select>
+            <button onclick="calcularScore()">Ver resultado</button>
         </div>
     </div>
     <div class="container result" id="result-container">
         <p id="result-message"></p>
-        <button class="btn-green" onclick="enviarParaWhatsApp()">🚀 Falar com um Especialista Agora!</button>
-        <p>Se estiver usando um iPhone e o botão não funcionar, copie o número abaixo:</p>
-        <button class="btn-blue" onclick="copiarNumero()">📋 Copiar Número: 11 96954-2465</button>
-        <p>Aperte no botão acima e copie o número para salvar nos seus contatos e enviar a mensagem.</p>
+        <button onclick="enviarParaWhatsApp()">🚀 Falar com um Especialista Agora!</button>
     </div>
 </body>
 </html>
