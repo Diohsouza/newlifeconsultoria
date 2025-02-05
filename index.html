@@ -109,6 +109,13 @@
             document.getElementById("result-container").style.display = "block";
             document.getElementById("result-message").innerHTML = `Parabéns, ${nome}! Seu perfil se encaixa em <strong>${score}%</strong> dos casos que conseguimos resolver com sucesso! 🎯 Vamos dar o próximo passo?`;
         }
+        
+        function enviarParaWhatsApp() {
+            let mensagem = `Olá, meu nome é ${nome}, tenho dívidas em ${tipoDivida} no valor aproximado de ${valorDivida}. Meu perfil se encaixa em ${score}% dos casos resolvidos por vocês. Como podemos prosseguir?`;
+            let telefoneWhatsApp = "5511969542465";
+            let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            window.location.href = url;
+        }
     </script>
 </head>
 <body>
@@ -153,3 +160,4 @@
     </div>
 </body>
 </html>
+
