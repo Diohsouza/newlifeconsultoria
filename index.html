@@ -4,6 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro para WhatsApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        label, p {
+            font-weight: bold;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
     <script>
         function enviarParaWhatsApp() {
             var nome = document.getElementById("nome").value;
@@ -20,28 +62,31 @@
     </script>
 </head>
 <body>
-    <h2>Preencha as informações</h2>
-    <label for="nome">Qual seu nome?</label>
-    <input type="text" id="nome" required><br><br>
-    
-    <p>Suas dívidas estão em:</p>
-    <input type="radio" id="cpf" name="divida" value="CPF" required>
-    <label for="cpf">CPF</label>
-    <input type="radio" id="cnpj" name="divida" value="CNPJ" required>
-    <label for="cnpj">CNPJ</label>
-    <input type="radio" id="cpfcnpj" name="divida" value="CPF e CNPJ" required>
-    <label for="cpfcnpj">CPF e CNPJ</label><br><br>
-    
-    <label for="valor">Qual o valor aproximado?</label>
-    <select id="valor">
-        <option value="10 mil">10 mil</option>
-        <option value="20 mil">20 mil</option>
-        <option value="30 mil">30 mil</option>
-        <option value="50 mil">50 mil</option>
-        <option value="100 mil">100 mil</option>
-        <option value="200 mil ou mais">200 mil ou mais</option>
-    </select><br><br>
-    
-    <button onclick="enviarParaWhatsApp()">Enviar para o WhatsApp</button>
+    <div class="container">
+        <h2>Preencha as informações</h2>
+        <label for="nome">Qual seu nome?</label>
+        <input type="text" id="nome" required><br><br>
+        
+        <p>Suas dívidas estão em:</p>
+        <input type="radio" id="cpf" name="divida" value="CPF" required>
+        <label for="cpf">CPF</label>
+        <input type="radio" id="cnpj" name="divida" value="CNPJ" required>
+        <label for="cnpj">CNPJ</label>
+        <input type="radio" id="cpfcnpj" name="divida" value="CPF e CNPJ" required>
+        <label for="cpfcnpj">CPF e CNPJ</label><br><br>
+        
+        <label for="valor">Qual o valor aproximado?</label>
+        <select id="valor">
+           <option value="10 mil">5 mil</option>
+            <option value="10 mil">10 mil</option>
+            <option value="20 mil">20 mil</option>
+            <option value="30 mil">30 mil</option>
+            <option value="50 mil">50 mil</option>
+            <option value="100 mil">100 mil</option>
+            <option value="200 mil ou mais">200 mil ou mais</option>
+        </select><br><br>
+        
+        <button onclick="enviarParaWhatsApp()">Enviar para o WhatsApp</button>
+    </div>
 </body>
 </html>
