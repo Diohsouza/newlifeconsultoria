@@ -49,12 +49,12 @@
     <script>
         function enviarParaWhatsApp() {
             var nome = document.getElementById("nome").value;
-            var tipoDivida = document.querySelector('input[name="divida"]:checked').value;
+            var tipoDivida = document.getElementById("tipoDivida").value;
             var valorDivida = document.getElementById("valor").value;
             
             var mensagem = `Olá! Meu nome é ${nome}. Minhas dívidas estão em: ${tipoDivida}. O valor aproximado é de ${valorDivida}.`;
             
-            var telefoneWhatsApp = "5511969542465"; // Substitua pelo seu número de WhatsApp
+            var telefoneWhatsApp = "5511999999999"; // Substitua pelo seu número de WhatsApp
             var url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.location.href = url;
@@ -67,17 +67,15 @@
         <label for="nome">Qual seu nome?</label>
         <input type="text" id="nome" required><br><br>
         
-        <p>Suas dívidas estão em:</p>
-        <input type="radio" id="cpf" name="divida" value="CPF" required>
-        <label for="cpf">CPF</label>
-        <input type="radio" id="cnpj" name="divida" value="CNPJ" required>
-        <label for="cnpj">CNPJ</label>
-        <input type="radio" id="cpfcnpj" name="divida" value="CPF e CNPJ" required>
-        <label for="cpfcnpj">CPF e CNPJ</label><br><br>
+        <label for="tipoDivida">Suas dívidas estão em:</label>
+        <select id="tipoDivida">
+            <option value="CPF">CPF</option>
+            <option value="CNPJ">CNPJ</option>
+            <option value="CPF e CNPJ">CPF e CNPJ</option>
+        </select><br><br>
         
         <label for="valor">Qual o valor aproximado?</label>
         <select id="valor">
-           <option value="10 mil">5 mil</option>
             <option value="10 mil">10 mil</option>
             <option value="20 mil">20 mil</option>
             <option value="30 mil">30 mil</option>
