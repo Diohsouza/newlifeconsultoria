@@ -69,7 +69,7 @@
             valorDivida = document.getElementById("valor").value;
             
             let mensagem = `Olá! Meu nome é ${nome}. Minhas dívidas estão em: ${tipoDivida}. O valor aproximado é de ${valorDivida}.`;
-            let telefoneWhatsApp = "5511969542465"; // Substitua pelo seu número de WhatsApp
+            let telefoneWhatsApp = "5511969542465";
             let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.location.href = url;
@@ -99,12 +99,13 @@
         <div class="question">
             <label for="valor">Qual o valor aproximado?</label>
             <select id="valor">
-                <option value="10 mil">10 mil</option>
-                <option value="20 mil">20 mil</option>
-                <option value="30 mil">30 mil</option>
-                <option value="50 mil">50 mil</option>
-                <option value="100 mil">100 mil</option>
-                <option value="200 mil ou mais">200 mil ou mais</option>
+                <option value="Abaixo de R$7.000,00">Abaixo de R$7.000,00</option>
+                <option value="De R$7.000 a R$20.000">De R$7.000 a R$20.000</option>
+                <option value="De R$20.000 a R$35.000">De R$20.000 a R$35.000</option>
+                <option value="De R$35.000 a R$50.000">De R$35.000 a R$50.000</option>
+                <option value="De R$50.000 a R$80.000">De R$50.000 a R$80.000</option>
+                <option value="De R$80.000 a R$100.000">De R$80.000 a R$100.000</option>
+                <option value="Acima de R$100.000,00">Acima de R$100.000,00</option>
             </select>
             <button onclick="nextStep()">Enviar para o WhatsApp</button>
         </div>
