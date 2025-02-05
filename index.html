@@ -45,22 +45,40 @@
         .question {
             display: none;
         }
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .progress {
+            height: 10px;
+            width: 0%;
+            background-color: #28a745;
+            border-radius: 5px;
+        }
     </style>
     <script>
         let step = 0;
         let nome = "", tipoDivida = "", valorDivida = "";
         
         function nextStep() {
-            let currentQuestion = document.getElementsByClassName("question")[step];
-            currentQuestion.style.display = "none";
+            let questions = document.getElementsByClassName("question");
+            questions[step].style.display = "none";
             step++;
             
-            if (step < document.getElementsByClassName("question").length) {
-                let nextQuestion = document.getElementsByClassName("question")[step];
-                nextQuestion.style.display = "block";
+            if (step < questions.length) {
+                questions[step].style.display = "block";
+                updateProgress();
             } else {
                 enviarParaWhatsApp();
             }
+        }
+        
+        function updateProgress() {
+            let progress = document.getElementById("progress");
+            progress.style.width = ((step / 3) * 100) + "%";
         }
         
         function enviarParaWhatsApp() {
@@ -68,7 +86,7 @@
             tipoDivida = document.getElementById("tipoDivida").value;
             valorDivida = document.getElementById("valor").value;
             
-            let mensagem = `Olá! Meu nome é ${nome}. Minhas dívidas estão em: ${tipoDivida}. O valor aproximado é de ${valorDivida}.`;
+            let mensagem = `Olá, tudo bem? Meu nome é ${nome} e acabei de preencher o formulário. Tenho dívidas em ${tipoDivida} e o valor aproximado é ${valorDivida}. Gostaria muito de entender como vocês podem me ajudar. Poderia me dar mais detalhes sobre o processo?`;
             let telefoneWhatsApp = "5511969542465";
             let url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
@@ -78,7 +96,12 @@
 </head>
 <body>
     <div class="container">
-        <h2>Responda as perguntas para receber ajuda!</h2>
+        <h2>New Life Consultoria Financeira</h2> 
+        <p>Responda essas 3 perguntas rápidas e fale com um especialista agora mesmo!</p>
+        
+        <div class="progress-bar">
+            <div id="progress" class="progress"></div>
+        </div>
         
         <div class="question" style="display: block;">
             <label for="nome">Qual seu nome?</label>
