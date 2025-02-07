@@ -146,17 +146,20 @@
         <div class="question">
             <label for="valor">Qual o valor aproximado?</label>
             <select id="valor">
-                <option value="Abaixo de R$7.000,00">Abaixo de R$7.000,00</option>
+                <option value="Abaixo de R$7.000">Abaixo de R$7.000</option>
                 <option value="De R$7.000 a R$20.000">De R$7.000 a R$20.000</option>
                 <option value="De R$20.000 a R$35.000">De R$20.000 a R$35.000</option>
                 <option value="De R$35.000 a R$50.000">De R$35.000 a R$50.000</option>
+                <option value="De R$50.000 a R$80.000">De R$50.000 a R$80.000</option>
+                <option value="De R$80.000 a R$100.000">De R$80.000 a R$100.000</option>
+                 <option value="Acima de R$100.000">Acima de R$100.000</option>
             </select>
             <button onclick="calcularScore()">Ver resultado</button>
         </div>
     </div>
     <div class="container result" id="result-container">
         <p id="result-message"></p>
-        <button onclick="enviarParaWhatsApp()">🚀 Falar com um Especialista Agora!</button>
+        <button onclick="enviarParaWhatsApp()">🚀 Converse agora com um atendente!</button>
     </div>
 </body>
 </html>
