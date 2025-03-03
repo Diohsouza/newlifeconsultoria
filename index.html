@@ -55,15 +55,15 @@
         function enviarDados() {
             let nome = document.getElementById("nome").value;
             let telefone = document.getElementById("telefone").value;
-            let url = https://script.google.com/macros/s/AKfycbxg5GQabAOVBuOyBAJEJlZWm1x4_w6c-bAifjSFDe8zRWQY-Rtp_t2zklaqpljxV-zyZw/exec; // Substituir pela URL do seu script
+            let url = "https://script.google.com/macros/s/AKfycbxg5GQabAOVBuOyBAJEJlZWm1x4_w6c-bAifjSFDe8zRWQY-Rtp_t2zklaqpljxV-zyZw/exec";
 
             if (nome && telefone) {
                 fetch(url, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        "Content-Type": "application/json"
                     },
-                    body: `nome=${encodeURIComponent(nome)}&telefone=${encodeURIComponent(telefone)}`
+                    body: JSON.stringify({ nome: nome, telefone: telefone })
                 })
                 .then(response => response.text())
                 .then(data => {
