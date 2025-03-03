@@ -53,28 +53,35 @@
     </style>
     <script>
         function enviarDados() {
-            let nome = document.getElementById("nome").value;
-            let telefone = document.getElementById("telefone").value;
-            let url = "https://script.google.com/macros/s/AKfycbxg5GQabAOVBuOyBAJEJlZWm1x4_w6c-bAifjSFDe8zRWQY-Rtp_t2zklaqpljxV-zyZw/exec";
+            let nome = document.getElementById("nome").value.trim();
+            let telefone = document.getElementById("telefone").value.trim();
+            let url = "https://script.google.com/macros/s/AKfycbxg5GQabAOVBuOyBAJEJlZWm1x4_w6c-bAifjSFDe8zRWQY-Rtp_t2zklaqpljxV-zyZw/exec"; // Substitua pela URL correta
 
-            if (nome && telefone) {
-                fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ nome: nome, telefone: telefone })
-                })
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("form-container").style.display = "none";
-                    document.getElementById("message-container").style.display = "block";
-                    document.getElementById("message").innerHTML = `Obrigado, ${nome}! Recebemos seu contato e um consultor entrará em contato com você em breve. 📞`;
-                })
-                .catch(error => console.error("Erro ao enviar dados:", error));
-            } else {
+            if (nome === "" || telefone === "") {
                 alert("Por favor, preencha todos os campos.");
+                return;
             }
+
+            let dados = { nome: nome, telefone: telefone };
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Resposta do servidor:", data);
+                document.getElementById("form-container").style.display = "none";
+                document.getElementById("message-container").style.display = "block";
+                document.getElementById("message").innerHTML = `Obrigado, ${nome}! Recebemos seu contato e um consultor entrará em contato com você em breve. 📞`;
+            })
+            .catch(error => {
+                console.error("Erro ao enviar os dados:", error);
+                alert("Erro ao enviar os dados. Tente novamente mais tarde.");
+            });
         }
     </script>
 </head>
