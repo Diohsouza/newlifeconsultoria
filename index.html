@@ -229,7 +229,6 @@
             color: var(--gray);
         }
 
-        /* Card de status verde (arquivado) */
         .protocol-status {
             background: linear-gradient(90deg, var(--success) 0%, #34c759 100%);
             color: white;
@@ -242,7 +241,6 @@
             color-adjust: exact;
         }
 
-        /* Card amarelo (aguardando pagamento) */
         .awaiting-payment {
             background: linear-gradient(90deg, var(--warning) 0%, var(--warning-dark) 100%);
             color: var(--dark);
@@ -271,7 +269,6 @@
             line-height: 1.4;
         }
 
-        /* Card preto (contagem regressiva) */
         .countdown-container {
             background: var(--dark);
             color: white;
@@ -382,60 +379,6 @@
             flex: 1;
         }
 
-        /* Estilos para impressão */
-        @media print {
-            body {
-                background: white !important;
-                padding: 0;
-                min-height: auto;
-                display: block;
-            }
-            
-            .container {
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                page-break-inside: avoid;
-            }
-            
-            .header, .protocol-status, .awaiting-payment, 
-            .countdown-container, .client-info {
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-            }
-            
-            .btn, .steps, .footer, .button-group {
-                display: none !important;
-            }
-            
-            .page {
-                display: block !important;
-                animation: none !important;
-            }
-            
-            .page1 {
-                display: none !important;
-            }
-            
-            .page2 {
-                transform: none !important;
-                opacity: 1 !important;
-            }
-            
-            .content {
-                padding: 20px !important;
-            }
-            
-            h2 {
-                margin-top: 0;
-            }
-            
-            .logo {
-                opacity: 0.1;
-            }
-        }
-
         @media (max-width: 576px) {
             .content {
                 padding: 20px 15px;
@@ -469,8 +412,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>New Life Consultoria Financeira</h1>
-            <p>Limpando nomes, transformando vidas.</p>
+            <h1>New Life Consultoria</h1>
+            <p>Sua nova chance começa aqui</p>
             <div class="logo">
                 <i class="fas fa-file-contract"></i>
             </div>
@@ -563,7 +506,7 @@
                 
                 <!-- Contagem regressiva -->
                 <div class="countdown-container">
-                    <h4>PRÓXIMO REMESSA DE PROCESSOS</h4>
+                    <h4>PRAZO PARA INCLUSÃO NO PRÓXIMO ENVIO</h4>
                     <div class="countdown">
                         <div class="countdown-item">
                             <div class="countdown-value" id="hours">00</div>
@@ -593,6 +536,9 @@
     </div>
 
     <script>
+        // Variável para armazenar o intervalo da contagem regressiva
+        let countdownInterval = null;
+        
         // Função para formatar CPF
         function formatCPF(cpf) {
             cpf = cpf.replace(/\D/g, '');
@@ -681,4 +627,317 @@
                 
                 // Mostra/esconde campos conforme o tipo
                 if (currentTipo === 'cpf') {
-                    document.getElementById('cpf-group').style.display =
+                    document.getElementById('cpf-group').style.display = 'block';
+                    document.getElementById('cpf-input-group').style.display = 'block';
+                    document.getElementById('cnpj-group').style.display = 'none';
+                    document.getElementById('cnpj-input-group').style.display = 'none';
+                } else {
+                    document.getElementById('cpf-group').style.display = 'none';
+                    document.getElementById('cpf-input-group').style.display = 'none';
+                    document.getElementById('cnpj-group').style.display = 'block';
+                    document.getElementById('cnpj-input-group').style.display = 'block';
+                }
+            });
+        });
+
+        // Formatação do CPF enquanto digita
+        cpfInput.addEventListener('input', function() {
+            this.value = formatCPF(this.value);
+        });
+
+        // Formatação do CNPJ enquanto digita
+        cnpjInput.addEventListener('input', function() {
+            this.value = formatCNPJ(this.value);
+        });
+
+        // Botão Avançar
+        btnAvancar.addEventListener('click', function() {
+            let nome, doc;
+            
+            if (currentTipo === 'cpf') {
+                nome = nomeInput.value.trim();
+                doc = cpfInput.value.trim();
+                
+                if (nome === '') {
+                    alert('Por favor, digite seu nome completo.');
+                    nomeInput.focus();
+                    return;
+                }
+                
+                if (doc.length !== 14) {
+                    alert('Por favor, digite um CPF válido.');
+                    cpfInput.focus();
+                    return;
+                }
+            } else {
+                nome = razaoSocialInput.value.trim();
+                doc = cnpjInput.value.trim();
+                
+                if (nome === '') {
+                    alert('Por favor, digite a razão social.');
+                    razaoSocialInput.focus();
+                    return;
+                }
+                
+                if (doc.length !== 18) {
+                    alert('Por favor, digite um CNPJ válido.');
+                    cnpjInput.focus();
+                    return;
+                }
+            }
+            
+            // Atualiza os dados na página 2
+            clientName.textContent = nome;
+            clientDoc.textContent = doc;
+            currentDate.textContent = updateCurrentDate();
+            
+            if (currentTipo === 'cpf') {
+                clientType.textContent = 'Pessoa Física';
+                docLabel.textContent = 'CPF:';
+            } else {
+                clientType.textContent = 'Pessoa Jurídica';
+                docLabel.textContent = 'CNPJ:';
+            }
+            
+            // Atualiza os steps
+            document.querySelectorAll('.step')[0].classList.remove('active');
+            document.querySelectorAll('.step')[1].classList.add('active');
+            
+            // Mostra a página 2 e esconde a página 1
+            page1.classList.remove('active');
+            page2.classList.add('active');
+            
+            // Inicia a contagem regressiva
+            updateCountdown();
+            
+            // Limpa qualquer intervalo anterior
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            // Configura novo intervalo
+            countdownInterval = setInterval(updateCountdown, 1000);
+        });
+
+        // Botão Voltar
+        btnVoltar.addEventListener('click', function() {
+            // Limpa o intervalo da contagem regressiva
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            
+            // Atualiza os steps
+            document.querySelectorAll('.step')[0].classList.add('active');
+            document.querySelectorAll('.step')[1].classList.remove('active');
+            
+            // Mostra a página 1 e esconde a página 2
+            page2.classList.remove('active');
+            page1.classList.add('active');
+        });
+
+        // Botão Imprimir
+        btnImprimir.addEventListener('click', function() {
+            // Criar uma versão otimizada para impressão
+            const printWindow = window.open('', '_blank');
+            
+            // Coletar dados atuais
+            const clientTypeValue = clientType.textContent;
+            const clientNameValue = clientName.textContent;
+            const docLabelValue = docLabel.textContent;
+            const clientDocValue = clientDoc.textContent;
+            const currentDateValue = currentDate.textContent;
+            const hoursValue = document.getElementById('hours').textContent;
+            const minutesValue = document.getElementById('minutes').textContent;
+            const secondsValue = document.getElementById('seconds').textContent;
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Protocolo - New Life Consultoria</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            padding: 20px;
+                            background: white;
+                        }
+                        .print-container {
+                            max-width: 700px;
+                            margin: 0 auto;
+                        }
+                        .header {
+                            background: linear-gradient(90deg, #2a5bd7 0%, #1d48b0 100%);
+                            color: white;
+                            padding: 20px;
+                            text-align: center;
+                            border-radius: 15px 15px 0 0;
+                        }
+                        .content {
+                            padding: 20px;
+                        }
+                        h2 {
+                            color: #1d48b0;
+                            text-align: center;
+                            margin-top: 0;
+                        }
+                        .client-info {
+                            background: #f8f9fa;
+                            border-left: 5px solid #2a5bd7;
+                            border-radius: 15px;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                        }
+                        .info-item {
+                            display: flex;
+                            margin-bottom: 10px;
+                        }
+                        .info-label {
+                            font-weight: bold;
+                            width: 120px;
+                            color: #6c757d;
+                        }
+                        .protocol-status {
+                            background: linear-gradient(90deg, #28a745 0%, #34c759 100%);
+                            color: white;
+                            border-radius: 15px;
+                            padding: 20px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        .awaiting-payment {
+                            background: linear-gradient(90deg, #ffc107 0%, #e0a800 100%);
+                            color: #212529;
+                            border-radius: 15px;
+                            padding: 20px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                            border: 1px solid rgba(0,0,0,0.1);
+                        }
+                        .countdown-container {
+                            background: #212529;
+                            color: white;
+                            border-radius: 15px;
+                            padding: 20px;
+                            text-align: center;
+                        }
+                        .countdown {
+                            display: flex;
+                            justify-content: center;
+                            gap: 15px;
+                            font-weight: bold;
+                        }
+                        .countdown-item {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        .countdown-value {
+                            background: #2a5bd7;
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-bottom: 5px;
+                        }
+                        .footer {
+                            text-align: center;
+                            padding: 15px;
+                            color: #6c757d;
+                            font-size: 13px;
+                        }
+                        @media print {
+                            body {
+                                padding: 0;
+                            }
+                            .print-container {
+                                max-width: 100%;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-container">
+                        <div class="header">
+                            <h1>New Life Consultoria</h1>
+                            <p>Sua nova chance começa aqui</p>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Protocolo de Processo Jurídico</h2>
+                            
+                            <div class="client-info">
+                                <div class="info-item">
+                                    <span class="info-label">Empresa:</span>
+                                    <span class="info-value">New Life Consultoria</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Tipo:</span>
+                                    <span class="info-value">${clientTypeValue}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Cliente:</span>
+                                    <span class="info-value">${clientNameValue}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">${docLabelValue}</span>
+                                    <span class="info-value">${clientDocValue}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Data:</span>
+                                    <span class="info-value">${currentDateValue}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="protocol-status">
+                                <h3>Processo Arquivado com Sucesso!</h3>
+                                <p>Todos os documentos foram recebidos e arquivados em nosso sistema.</p>
+                            </div>
+                            
+                            <div class="awaiting-payment">
+                                <h3>Aguardando Pagamento</h3>
+                                <p>Faltando apenas o pagamento para iniciarmos o processo jurídico.</p>
+                            </div>
+                            
+                            <div class="countdown-container">
+                                <h4>PRAZO PARA INCLUSÃO NO PRÓXIMO ENVIO</h4>
+                                <div class="countdown">
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">${hoursValue}</div>
+                                        <div>Horas</div>
+                                    </div>
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">${minutesValue}</div>
+                                        <div>Minutos</div>
+                                    </div>
+                                    <div class="countdown-item">
+                                        <div class="countdown-value">${secondsValue}</div>
+                                        <div>Segundos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="footer">
+                            &copy; 2025 New Life Consultoria - Todos os direitos reservados
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.print();
+            printWindow.close();
+        });
+
+        // Atualiza a data atual quando a página carrega
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.step')[0].classList.add('active');
+            currentDate.textContent = updateCurrentDate();
+        });
+    </script>
+</body>
+</html>
